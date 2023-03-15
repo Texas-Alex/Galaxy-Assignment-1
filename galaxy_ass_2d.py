@@ -4,6 +4,9 @@ import numpy as np
 import math
 import statistics as stats
 
+
+#PARAM filename: the filename of the data to be read. no header row
+#RETURN: np.arrays for the right ascention, declination and cz of every galaxy in the cluster
 def readgalaxy (filename):
     try:
         ra, dec, cz = np.genfromtxt(filename, unpack = True, usecols = (0,1,4), dtype = float, delimiter = ',')
@@ -12,6 +15,16 @@ def readgalaxy (filename):
 
     return ra, dec, cz
 
+
+
+#method to calculate the viral mass using the formula in question 2d
+#PARAM ra: np.array containing the right ascention of each galaxy from readgalaxy()
+#PARAM dec: np.array containing the declination of each galaxy from readgalaxy()
+#PARAM cz: np.array containing the cz velocity of each galaxy from readgalaxy()
+#PARAM cz_mean: the average value of the cz array
+#PARAM N: number of galaxies in the cluster
+#PARAM dist: distance to the cluster, calculated using Hubble's Law
+#RETURN: virial mass of the galaxy cluster
 def mass_vir(ra, dec, cz, cz_mean, N, dist):
    Vsum = 0.0
    rsum = 0.0
@@ -37,11 +50,11 @@ def main ():
     key = sys.argv[2]
     Hubble = 67.77
 
+    
     ra, dec, cz = readgalaxy(filename)
     dist = stats.mean(cz)/Hubble
     cz_mean = stats.mean(cz)
     
-
 
     mass = mass_vir(ra,dec, cz,cz_mean, len(ra), dist)
     print("the mass of " + key + " cluster is: " + str(mass) + " solar masses")
