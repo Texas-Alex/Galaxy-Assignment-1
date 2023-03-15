@@ -4,6 +4,12 @@ import numpy as np
 import math
 import statistics as stat
 
+
+#read and separate the ra, dec and cz from the filtered_ files. no header needs to be removed. 
+#PARAM filename: the name of the file to be read
+#RETURN ra: np.array of the right ascention
+#RETURN dec: np.array of the declination
+#RETURN cz: np.array of the cz velocity 
 def readgalaxy (filename):
     try:
         ra, dec, cz = np.genfromtxt(filename, unpack = True, usecols = (0,1,4), dtype = float, delimiter = ',')
@@ -12,7 +18,14 @@ def readgalaxy (filename):
 
     return ra, dec, cz
 
-
+#method to calculate the projected radius
+#PARAM ra_g: np.array of the right ascention of each galaxy in the cluster
+#PARAM dec_g: np.array of the decliination of each galaxy in the cluster
+#PARAM ra_c: float of the right ascention of the centre of the galaxy cluster (given in q)
+#PARAM dec_c: float of the declination of the centre of the galaxy cluster (given in q)
+#PARAM N: int of number of galaxies in the cluster
+#PARAM dist: float: distance to the cluster
+#RETURN: projected radius R_p of the galaxy cluster
 def projected_radius(ra_g, dec_g, ra_c, dec_c, N, dist):
     rad = 0.0
     for i in range(N):
@@ -24,6 +37,13 @@ def projected_radius(ra_g, dec_g, ra_c, dec_c, N, dist):
 
     return rad/N
 
+
+#method to calculate the mean harmonic radius
+#PARAM ra: np.array of the right ascention of each galaxy in the cluster
+#PARAM dec: np.array of the decliination of each galaxy in the cluster
+#PARAM N: int of number of galaxies in the cluster
+#PARAM dist: float: distance to the cluster
+#RETURN: mean harmonic radius R_H of the galaxy cluster
 def harmonic_radius(ra, dec, N, dist):
     sum = 0.0
     for i in range(N):
@@ -44,7 +64,8 @@ def main():
     Hubble = 67.77
 
     ra, dec, cz = readgalaxy(filename)
-    dist = stat.mean(cz)/Hubble
+    dist = stat.mean(cz)/Hubble #using Hubble's law to determine distance to the cluster
+    
     print("mean cz for cluster " +key + " is: " + str(stat.mean(cz)))
     print("the distance to " + key + " cluster is: " + str(dist) + "Mpc")
 
