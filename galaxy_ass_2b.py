@@ -5,7 +5,9 @@ import statistics as stat
 
 
 #function to separate the ra, dec and cz from the rest of the file 
-# the raw files used still contain a header that is removed when reading the file
+#the raw files used still contain a header that is removed when reading the file
+#PARAM filename: name of the file to bea read
+#RETRUN: header removed np.arrays containing the right ascention, declination and cz of every galaxy in the cluster 
 def readgalaxy (filename):
     try:
         ra, dec, cz = np.genfromtxt(filename, unpack = True, usecols = (0,1,4),dtype = float, delimiter = ',')
