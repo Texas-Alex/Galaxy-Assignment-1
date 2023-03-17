@@ -6,6 +6,8 @@ import statistics as stat
 
 
 #function to separate the ra, dec and cz from the rest of the file 
+#PARAM filename: name of the file to be read
+#RETRUN: np.array()s of the right ascention, declination and cz velocity of the galaxies in the cluster
 def readgalaxy (filename):
     try:
         ra, dec, cz = np.genfromtxt(filename, unpack = True, usecols = (0,1,4),dtype = float, delimiter = ',')
@@ -27,6 +29,7 @@ def main():
         lines = galf.readlines()
         if key == 'abell':
             for i in range(len(lines)-1):
+                #calculating distance from galaxy to centre of the cluster
                 dist = math.sqrt((ra[i]-258.1292)**2 + (dec[i]-64.0925)**2)
                 if (dist <= 5 and (cz[i] >= 18000 and cz[i] <=30000)):
                     valid_gals.append(lines[i])
@@ -37,6 +40,7 @@ def main():
 
         if key  == 'coma':
             for i in range(len(lines)-1):
+                #calculating distance from galaxy to centre of the cluster
                 dist = math.sqrt((ra[i]-194.95799)**2 + (dec[i]-27.98300)**2)
                 if (dist <= 5 and (cz[i] >= 4500 and cz[i] <= 9250)):
                     valid_gals.append(lines[i])
